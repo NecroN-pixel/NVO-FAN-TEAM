@@ -3,114 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NVO FAN TEAM | Official</title>
+    <title>NVO TEAM HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --yt-red: #ff0000; --bg: #050505; --card: #121212; --accent: #1ed760; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 80px; }
+        :root { --red: #ff3e3e; --bg: #080808; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.1); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { background: var(--bg); color: #e0e0e0; line-height: 1.6; overflow-x: hidden; padding-bottom: 80px; }
 
-        /* Modern Cam Efekti Header */
-        header { position: sticky; top: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; padding: 15px; text-align: center; border-bottom: 1px solid #222; }
-        .logo { font-size: 1.5rem; font-weight: 900; color: var(--yt-red); letter-spacing: 2px; }
+        /* Arkaplan Işıltıları */
+        .glow { position: fixed; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,62,62,0.1) 0%, transparent 70%); z-index: -1; pointer-events: none; }
 
-        .container { max-width: 500px; margin: auto; padding: 15px; }
+        /* Modern Navigasyon */
+        .top-nav { background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 15px; text-align: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.4rem; font-weight: 900; color: var(--red); letter-spacing: 3px; text-transform: uppercase; }
 
-        /* Üye Sayacı Kartı */
-        .stat-card { background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid #333; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(255,0,0,0.1); }
-        .stat-num { font-size: 3rem; font-weight: 900; color: var(--yt-red); margin: 5px 0; }
-        .stat-label { font-size: 0.8rem; color: #888; letter-spacing: 1px; }
+        .container { max-width: 550px; margin: 20px auto; padding: 0 15px; }
 
-        /* Sekmeler */
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab { flex: 1; padding: 12px; text-align: center; background: #1a1a1a; border-radius: 12px; cursor: pointer; color: #666; font-weight: bold; border: 1px solid #222; transition: 0.3s; }
-        .tab.active { background: var(--yt-red); color: white; border-color: var(--yt-red); }
-
-        /* İçerik Alanları */
-        .section { display: none; animation: fadeIn 0.4s ease; }
-        .section.active { display: block; }
-
-        /* Duyuru ve Chat Kartları */
-        .card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 12px; border: 1px solid #222; position: relative; }
-        .ann-card { border-left: 4px solid var(--yt-red); background: #1a0f0f; }
-        .card-header { font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: var(--yt-red); display: flex; align-items: center; gap: 6px; }
+        /* Cam Efekti Kartlar */
+        .card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 24px; padding: 25px; margin-bottom: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
         
-        /* Chat Box Gelişmiş */
-        #chatBox { height: 50vh; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; }
-        .msg-own { align-self: flex-end; background: #333; }
+        /* Üye Sayacı */
+        .counter-card { background: linear-gradient(135deg, rgba(255,62,62,0.15) 0%, transparent 100%); border: 1px solid rgba(255,62,62,0.3); text-align: center; }
+        .count-num { font-size: 3.5rem; font-weight: 900; color: var(--red); line-height: 1; text-shadow: 0 0 20px rgba(255,62,62,0.4); }
 
-        /* Input Alanı */
-        .input-area { position: fixed; bottom: 75px; left: 0; right: 0; padding: 10px; background: #000; border-top: 1px solid #222; display: flex; gap: 10px; z-index: 999; }
-        input[type="text"] { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #333; background: #1a1a1a; color: white; outline: none; }
-        .send-btn { background: var(--yt-red); color: white; border: none; padding: 0 20px; border-radius: 12px; font-weight: bold; }
+        /* Sekme Sistemi */
+        .tab-bar { display: flex; gap: 8px; margin-bottom: 20px; background: #111; padding: 6px; border-radius: 16px; border: 1px solid var(--border); }
+        .tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; border-radius: 12px; font-weight: bold; font-size: 0.9rem; color: #666; }
+        .tab.active { background: var(--red); color: white; box-shadow: 0 5px 15px rgba(255,62,62,0.3); }
+
+        /* Profil ve Formlar */
+        .profile-pic { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--red); margin-bottom: 15px; box-shadow: 0 0 25px rgba(255,62,62,0.2); }
+        input { width: 100%; padding: 14px; margin-top: 10px; border-radius: 14px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: white; font-size: 1rem; }
+        input:focus { border-color: var(--red); background: rgba(0,0,0,0.6); }
+
+        /* Rehber Kutusu */
+        .guide-box { background: rgba(30, 215, 96, 0.05); border: 1px dashed #1ed760; padding: 15px; border-radius: 16px; margin: 15px 0; font-size: 0.85rem; text-align: left; }
+        
+        .btn { width: 100%; padding: 16px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; margin-top: 12px; font-size: 1rem; }
+        .btn-red { background: var(--red); color: white; }
+        .btn-ghost { background: transparent; border: 1px solid var(--border); color: #888; margin-top: 20px; }
+
+        /* Chat Akışı */
+        #chatBox { height: 450px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 5px; scroll-behavior: smooth; }
+        .msg-row { display: flex; gap: 12px; align-items: flex-start; animation: slideIn 0.3s ease; }
+        .msg-text { background: rgba(255,255,255,0.05); padding: 12px 16px; border-radius: 18px; border-bottom-left-radius: 4px; font-size: 0.95rem; flex: 1; }
+        .msg-user { font-size: 0.75rem; color: var(--red); font-weight: 800; display: block; margin-bottom: 4px; }
 
         /* Alt Navigasyon */
-        nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #222; z-index: 1000; }
-        nav a { color: #555; text-decoration: none; font-size: 1.2rem; transition: 0.3s; }
-        nav a.active { color: var(--yt-red); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 18px; border-top: 1px solid var(--border); }
+        .bottom-nav i { font-size: 1.3rem; color: #444; }
+        .bottom-nav i.active { color: var(--red); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .page { display: none; } .page.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
+    <div class="glow" style="top: -100px; left: -100px;"></div>
+    <div class="glow" style="bottom: -100px; right: -100px; background: radial-gradient(circle, rgba(255,62,62,0.05) 0%, transparent 70%);"></div>
 
-<header><div class="logo">NVO TEAM</div></header>
+    <div class="top-nav"><div class="logo">NVO TEAM HUB</div></div>
 
-<div class="container">
-    <div class="stat-card">
-        <div class="stat-label">TOPLAM TEAM ÜYESİ</div>
-        <div class="stat-num" id="memberCount">0</div>
-        <div style="font-size: 0.7rem; color: var(--accent);"><i class="fas fa-circle"></i> CANLI BAĞLANTI AKTİF</div>
+    <div class="container">
+        <div class="card counter-card">
+            <p style="font-size: 0.75rem; font-weight: 800; color: var(--red); opacity: 0.8;">OFFICIAL TEAM MEMBERS</p>
+            <div id="totalCount" class="count-num">0</div>
+        </div>
+
+        <div class="tab-bar">
+            <div class="tab active" onclick="nav('home', this)">DUYURU</div>
+            <div class="tab" onclick="nav('chat', this)">CHAT</div>
+            <div class="tab" id="pTab" style="display:none" onclick="nav('profile', this)">PROFİL</div>
+        </div>
+
+        <div id="homePage" class="page active">
+            <div id="adminPanel" class="card" style="display:none; border-color: var(--red);">
+                <textarea id="annInput" placeholder="Kurucu duyurusu yazın..." style="width:100%; height:80px; background:rgba(0,0,0,0.5); border-radius:12px; padding:10px; color:white; border:1px solid #333; outline:none;"></textarea>
+                <button class="btn btn-red" onclick="sendAnn()">YAYINLA</button>
+            </div>
+            <div id="annList"></div>
+        </div>
+
+        <div id="chatPage" class="page">
+            <div class="card">
+                <div id="chatBox"></div>
+                <div id="chatIn" style="display:none; margin-top:15px; border-top:1px solid var(--border); padding-top:15px;">
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="msgInput" placeholder="Mesaj yaz..." style="margin:0;">
+                        <button onclick="sendChat()" class="btn btn-red" style="width:auto; margin:0; padding:0 20px;"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+                <div id="chatWait" style="text-align:center; padding:20px; color:#555;">Sohbet etmek için giriş yap.</div>
+            </div>
+        </div>
+
+        <div id="profilePage" class="page">
+            <div class="card" style="text-align: center;">
+                <img id="myAvatar" class="profile-pic" src="https://via.placeholder.com/110">
+                <h2 id="myName" style="margin-bottom: 15px;">Kullanıcı</h2>
+
+                <div class="guide-box">
+                    <strong>📸 Fotoğrafını Değiştir:</strong><br>
+                    1. <a href="https://hizliresim.com" target="_blank" style="color:#1ed760; font-weight:bold;">Hızlı Resim</a> sitesine yükle.<br>
+                    2. <b>"Direkt Link"</b> yazanı kopyala.<br>
+                    3. Aşağıdaki kutuya yapıştır ve kaydet.
+                </div>
+
+                <input type="text" id="picUrlIn" placeholder="Fotoğraf Linki (https://...)">
+                <input type="text" id="nameIn" placeholder="Görünür İsim">
+                <button class="btn btn-red" onclick="saveProfile()">PROFİLİ GÜNCELLE</button>
+
+                <button class="btn btn-ghost" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Oturumu Kapat</button>
+                <p onclick="delAcc()" style="color:#300; font-size:0.7rem; margin-top:20px; cursor:pointer;">Hesabı Tamamen Sil</p>
+            </div>
+        </div>
+
+        <div id="loginArea" style="margin-top: 10px;">
+            <button class="btn" style="background:white; color:black;" onclick="login()"><i class="fab fa-google"></i> Google ile Aramıza Katıl</button>
+        </div>
     </div>
 
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('ann-sec', this)">DUYURULAR</div>
-        <div class="tab" onclick="switchTab('chat-sec', this)">CHAT</div>
-    </div>
-
-    <div id="adminPanel" style="display:none; margin-bottom: 20px;" class="card">
-        <strong style="color:var(--yt-red); font-size: 0.8rem;">YÖNETİCİ PANELİ</strong>
-        <input type="text" id="annInput" placeholder="Duyuru içeriği..." style="margin-top:10px;">
-        <button class="send-btn" style="width:100%; height: 45px; margin-top:10px;" id="btnAnn">DUYURU AT</button>
-    </div>
-
-    <div id="ann-sec" class="section active">
-        <div id="annList"></div>
-    </div>
-
-    <div id="chat-sec" class="section">
-        <div id="chatBox"></div>
-        <div id="loginWarn" style="text-align:center; padding:20px; color:#666;">Mesaj yazmak için giriş yap.</div>
-    </div>
-</div>
-
-<div id="authArea" style="position:fixed; bottom:140px; width:100%; padding:0 20px; z-index: 1001;">
-    <button id="googleBtn" style="width:100%; padding:15px; border-radius:15px; border:none; font-weight:bold; display:flex; align-items:center; justify-content:center; gap:10px; background:white; color:black; box-shadow: 0 10px 20px rgba(0,0,0,0.4);">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Google ile Katıl
-    </button>
-</div>
-
-<div class="input-area" id="msgInputArea" style="display:none;">
-    <input type="text" id="chatInput" placeholder="Mesajınızı yazın...">
-    <button class="send-btn" id="btnChat"><i class="fas fa-paper-plane"></i></button>
-</div>
-
-<nav>
-    <a href="#" class="active"><i class="fas fa-home"></i></a>
-    <a href="https://youtube.com/@necronvo"><i class="fab fa-youtube"></i></a>
-    <a href="https://www.instagram.com/necron.vo"><i class="fab fa-instagram"></i></a>
-</nav>
+    <nav class="bottom-nav">
+        <i class="fas fa-home active" onclick="nav('home', this)"></i>
+        <i class="fas fa-comments" onclick="nav('chat', this)"></i>
+        <i class="fas fa-user-gear" onclick="nav('profile', this)"></i>
+    </nav>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, addDoc, query, orderBy, serverTimestamp, increment, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAh1FMjRRyQsiRUf1YKf0htPDSP-I8j-J8",
         authDomain: "nvo-fan.firebaseapp.com",
         projectId: "nvo-fan",
-        storageBucket: "nvo-fan.firebasestorage.app",
+        storageBucket: "nvo-fan.appspot.com",
         messagingSenderId: "724570776040",
         appId: "1:724570776040:web:fdae1a49175a6bd44ac45d"
     };
@@ -119,43 +148,97 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
-    const ADMIN_MAIL = "necron.offical@gmail.com";
 
-    // --- TAB SİSTEMİ ---
-    window.switchTab = (id, el) => {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+    // SAYFA GEÇİŞİ
+    window.nav = (id, el) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id + 'Page').classList.add('active');
+        document.querySelectorAll('.tab, .bottom-nav i').forEach(t => t.classList.remove('active'));
         el.classList.add('active');
     };
 
-    // --- SAYAÇ VE AUTH ---
-    onSnapshot(doc(db, "stats", "members"), (d) => {
-        if(d.exists()) document.getElementById('memberCount').innerText = d.data().count;
-    });
-
+    // OTURUM
     onAuthStateChanged(auth, async (user) => {
         if(user) {
-            document.getElementById('authArea').style.display = 'none';
-            document.getElementById('msgInputArea').style.display = 'flex';
-            document.getElementById('loginWarn').style.display = 'none';
-            if(user.email === ADMIN_MAIL) document.getElementById('adminPanel').style.display = 'block';
-
-            // Üye Kayıt & Sayaç Artırma
+            document.getElementById('loginArea').style.display = 'none';
+            document.getElementById('pTab').style.display = 'block';
+            document.getElementById('chatIn').style.display = 'block';
+            document.getElementById('chatWait').style.display = 'none';
+            
             const uRef = doc(db, "users", user.uid);
-            const uSnap = await getDoc(uRef);
-            if(!uSnap.exists()) {
-                await setDoc(uRef, { name: user.displayName, email: user.email });
-                const sRef = doc(db, "stats", "members");
-                await updateDoc(sRef, { count: increment(1) }).catch(async () => await setDoc(sRef, {count: 1}));
+            const snap = await getDoc(uRef);
+            if(!snap.exists()) {
+                await setDoc(uRef, { name: user.displayName, photo: user.photoURL });
+                await updateDoc(doc(db, "stats", "members"), { count: increment(1) });
+            } else {
+                const data = snap.data();
+                document.getElementById('myAvatar').src = data.photo || user.photoURL;
+                document.getElementById('myName').innerText = data.name;
+                document.getElementById('nameIn').value = data.name;
+                document.getElementById('picUrlIn').value = data.photo;
             }
+            if(user.email === "necron.offical@gmail.com") document.getElementById('adminPanel').style.display = 'block';
         }
     });
 
-    document.getElementById('googleBtn').onclick = () => signInWithPopup(auth, provider);
+    window.login = () => signInWithPopup(auth, provider);
+    window.logout = () => confirm("Çıkış yapılsın mı?") && signOut(auth).then(() => location.reload());
 
-    // --- DUYURU SİSTEMİ ---
-    document.getElementById('btnAnn').onclick = async () => {
+    window.saveProfile = async () => {
+        const u = auth.currentUser;
+        const name = document.getElementById('nameIn').value;
+        const pic = document.getElementById('picUrlIn').value;
+        if(name.trim()) {
+            await updateDoc(doc(db, "users", u.uid), { name: name, photo: pic });
+            alert("Profil Güncellendi!");
+            location.reload();
+        }
+    };
+
+    // SAYAÇ
+    onSnapshot(doc(db, "stats", "members"), d => {
+        if(d.exists()) document.getElementById('totalCount').innerText = d.data().count;
+    });
+
+    // DUYURU & CHAT (VERİ ÇEKME)
+    onSnapshot(query(collection(db, "announcements"), orderBy("time", "desc")), snap => {
+        const list = document.getElementById('annList');
+        list.innerHTML = "";
+        snap.forEach(d => {
+            list.innerHTML += `<div class="card" style="border-left:4px solid var(--red)">
+                <small style="color:var(--red); font-weight:900;">OFFICIAL ANNOUNCEMENT</small>
+                <p style="margin-top:5px;">${d.data().text}</p>
+            </div>`;
+        });
+    });
+
+    onSnapshot(query(collection(db, "messages"), orderBy("time", "asc")), snap => {
+        const box = document.getElementById('chatBox');
+        box.innerHTML = "";
+        snap.forEach(d => {
+            const m = d.data();
+            box.innerHTML += `<div class="msg-row">
+                <img src="${m.photo || 'https://via.placeholder.com/35'}" style="width:35px;height:35px;border-radius:50%">
+                <div class="msg-text"><span class="msg-user">${m.name}</span>${m.text}</div>
+            </div>`;
+        });
+        box.scrollTop = box.scrollHeight;
+    });
+
+    window.sendChat = async () => {
+        const val = document.getElementById('msgInput').value;
+        if(!val.trim()) return;
+        const uSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
+        await addDoc(collection(db, "messages"), { 
+            name: uSnap.data().name, 
+            photo: uSnap.data().photo, 
+            text: val, 
+            time: serverTimestamp() 
+        });
+        document.getElementById('msgInput').value = "";
+    };
+
+    window.sendAnn = async () => {
         const val = document.getElementById('annInput').value;
         if(val.trim()) {
             await addDoc(collection(db, "announcements"), { text: val, time: serverTimestamp() });
@@ -163,33 +246,15 @@
         }
     };
 
-    onSnapshot(query(collection(db, "announcements"), orderBy("time", "desc")), (snap) => {
-        const list = document.getElementById('annList');
-        list.innerHTML = "";
-        snap.forEach(doc => {
-            list.innerHTML += `<div class="card ann-card"><div class="card-header"><i class="fas fa-crown"></i> NECRONVO</div>${doc.data().text}</div>`;
-        });
-    });
-
-    // --- CHAT SİSTEMİ ---
-    document.getElementById('btnChat').onclick = async () => {
-        const val = document.getElementById('chatInput').value;
-        if(val.trim() && auth.currentUser) {
-            await addDoc(collection(db, "messages"), { name: auth.currentUser.displayName, text: val, time: serverTimestamp() });
-            document.getElementById('chatInput').value = "";
+    window.delAcc = async () => {
+        if(confirm("TÜM VERİLERİN SİLİNECEK! Emin misin?")) {
+            await deleteDoc(doc(db, "users", auth.currentUser.uid));
+            await updateDoc(doc(db, "stats", "members"), { count: increment(-1) });
+            await deleteUser(auth.currentUser);
+            location.reload();
         }
     };
-
-    onSnapshot(query(collection(db, "messages"), orderBy("time", "asc")), (snap) => {
-        const box = document.getElementById('chatBox');
-        box.innerHTML = "";
-        snap.forEach(doc => {
-            const d = doc.data();
-            box.innerHTML += `<div class="card"><span style="font-size:0.7rem; color:#888; display:block;">${d.name}</span>${d.text}</div>`;
-        });
-        box.scrollTop = box.scrollHeight;
-    });
-
 </script>
 </body>
 </html>
+
