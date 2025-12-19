@@ -3,79 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NVO FAN TEAM | Sosyal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>NVO FAN TEAM | Official</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --yt-red: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #ffffff; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 70px; }
+        :root { --yt-red: #ff0000; --bg: #050505; --card: #121212; --accent: #1ed760; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 80px; }
 
-        /* HEADER & TABS */
-        header { padding: 20px; text-align: center; background: #000; border-bottom: 1px solid #222; }
-        .tabs { display: flex; background: #111; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
-        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: #666; font-weight: bold; transition: 0.3s; }
-        .tab.active { color: var(--yt-red); border-bottom: 3px solid var(--yt-red); background: #1a1a1a; }
+        /* Modern Cam Efekti Header */
+        header { position: sticky; top: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; padding: 15px; text-align: center; border-bottom: 1px solid #222; }
+        .logo { font-size: 1.5rem; font-weight: 900; color: var(--yt-red); letter-spacing: 2px; }
 
         .container { max-width: 500px; margin: auto; padding: 15px; }
 
-        /* SECTIONS */
-        .section { display: none; min-height: 300px; }
+        /* Üye Sayacı Kartı */
+        .stat-card { background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid #333; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(255,0,0,0.1); }
+        .stat-num { font-size: 3rem; font-weight: 900; color: var(--yt-red); margin: 5px 0; }
+        .stat-label { font-size: 0.8rem; color: #888; letter-spacing: 1px; }
+
+        /* Sekmeler */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab { flex: 1; padding: 12px; text-align: center; background: #1a1a1a; border-radius: 12px; cursor: pointer; color: #666; font-weight: bold; border: 1px solid #222; transition: 0.3s; }
+        .tab.active { background: var(--yt-red); color: white; border-color: var(--yt-red); }
+
+        /* İçerik Alanları */
+        .section { display: none; animation: fadeIn 0.4s ease; }
         .section.active { display: block; }
 
-        /* MESAJ VE DUYURU STİLLERİ */
-        .card { background: var(--card); border-radius: 12px; padding: 15px; margin-bottom: 10px; border: 1px solid #222; word-wrap: break-word; }
-        .ann-card { border-left: 5px solid var(--yt-red); background: #1a0a0a; }
-        .user-name { font-size: 0.75rem; color: var(--yt-red); font-weight: bold; margin-bottom: 5px; display: block; }
+        /* Duyuru ve Chat Kartları */
+        .card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 12px; border: 1px solid #222; position: relative; }
+        .ann-card { border-left: 4px solid var(--yt-red); background: #1a0f0f; }
+        .card-header { font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: var(--yt-red); display: flex; align-items: center; gap: 6px; }
         
-        /* CHAT KUTUSU */
-        #chatBox { height: 60vh; overflow-y: auto; display: flex; flex-direction: column-reverse; /* Yeni mesajlar altta kalsın */ }
-        
-        /* INPUT AREA */
-        .input-bar { position: fixed; bottom: 65px; left: 0; right: 0; padding: 10px; background: #111; display: flex; gap: 8px; border-top: 1px solid #333; }
-        input, textarea { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #222; color: white; outline: none; }
-        .send-btn { background: var(--yt-red); color: white; border: none; padding: 0 20px; border-radius: 8px; font-weight: bold; }
+        /* Chat Box Gelişmiş */
+        #chatBox { height: 50vh; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; }
+        .msg-own { align-self: flex-end; background: #333; }
 
-        /* ADMIN PANEL */
-        #adminPanel { background: #1a1a1a; padding: 15px; border-radius: 12px; border: 1px dashed var(--yt-red); margin-bottom: 15px; }
+        /* Input Alanı */
+        .input-area { position: fixed; bottom: 75px; left: 0; right: 0; padding: 10px; background: #000; border-top: 1px solid #222; display: flex; gap: 10px; z-index: 999; }
+        input[type="text"] { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #333; background: #1a1a1a; color: white; outline: none; }
+        .send-btn { background: var(--yt-red); color: white; border: none; padding: 0 20px; border-radius: 12px; font-weight: bold; }
 
-        /* NAV */
-        nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #222; }
-        nav a { color: #555; font-size: 1.2rem; }
+        /* Alt Navigasyon */
+        nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #222; z-index: 1000; }
+        nav a { color: #555; text-decoration: none; font-size: 1.2rem; transition: 0.3s; }
         nav a.active { color: var(--yt-red); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<header><h1 style="color:var(--yt-red); font-size:1.5rem;">NVO FAN TEAM</h1></header>
-
-<div class="tabs">
-    <div class="tab active" onclick="switchTab('ann-sec', this)">DUYURULAR</div>
-    <div class="tab" onclick="switchTab('chat-sec', this)">GLOBAL CHAT</div>
-</div>
+<header><div class="logo">NVO TEAM</div></header>
 
 <div class="container">
+    <div class="stat-card">
+        <div class="stat-label">TOPLAM TEAM ÜYESİ</div>
+        <div class="stat-num" id="memberCount">0</div>
+        <div style="font-size: 0.7rem; color: var(--accent);"><i class="fas fa-circle"></i> CANLI BAĞLANTI AKTİF</div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('ann-sec', this)">DUYURULAR</div>
+        <div class="tab" onclick="switchTab('chat-sec', this)">CHAT</div>
+    </div>
+
+    <div id="adminPanel" style="display:none; margin-bottom: 20px;" class="card">
+        <strong style="color:var(--yt-red); font-size: 0.8rem;">YÖNETİCİ PANELİ</strong>
+        <input type="text" id="annInput" placeholder="Duyuru içeriği..." style="margin-top:10px;">
+        <button class="send-btn" style="width:100%; height: 45px; margin-top:10px;" id="btnAnn">DUYURU AT</button>
+    </div>
+
     <div id="ann-sec" class="section active">
-        <div id="adminPanel" style="display:none;">
-            <textarea id="annInput" placeholder="Kurucu duyurusu yaz..."></textarea>
-            <button class="send-btn" style="width:100%; margin-top:10px; height:40px;" onclick="postAnn()">YAYINLA</button>
-        </div>
         <div id="annList"></div>
     </div>
 
     <div id="chat-sec" class="section">
         <div id="chatBox"></div>
-        <div class="input-bar" id="chatInputBar" style="display:none;">
-            <input type="text" id="chatInput" placeholder="Mesajınızı yazın...">
-            <button class="send-btn" onclick="sendChat()">GÖNDER</button>
-        </div>
-        <div id="loginWarn" style="text-align:center; padding:20px; color:#666;">Yazmak için giriş yapmalısın.</div>
+        <div id="loginWarn" style="text-align:center; padding:20px; color:#666;">Mesaj yazmak için giriş yap.</div>
     </div>
 </div>
 
-<div id="authFloat" style="position:fixed; bottom:120px; width:100%; display:flex; justify-content:center; padding:0 20px;">
-    <button id="googleBtn" style="width:100%; max-width:400px; padding:15px; border-radius:10px; border:none; font-weight:bold; cursor:pointer;">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" style="vertical-align:middle;"> Google ile Giriş Yap
+<div id="authArea" style="position:fixed; bottom:140px; width:100%; padding:0 20px; z-index: 1001;">
+    <button id="googleBtn" style="width:100%; padding:15px; border-radius:15px; border:none; font-weight:bold; display:flex; align-items:center; justify-content:center; gap:10px; background:white; color:black; box-shadow: 0 10px 20px rgba(0,0,0,0.4);">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Google ile Katıl
     </button>
+</div>
+
+<div class="input-area" id="msgInputArea" style="display:none;">
+    <input type="text" id="chatInput" placeholder="Mesajınızı yazın...">
+    <button class="send-btn" id="btnChat"><i class="fas fa-paper-plane"></i></button>
 </div>
 
 <nav>
@@ -87,7 +104,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAh1FMjRRyQsiRUf1YKf0htPDSP-I8j-J8",
@@ -102,10 +119,9 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
-
     const ADMIN_MAIL = "necron.offical@gmail.com";
 
-    // --- TAB SİSTEMİ FİX ---
+    // --- TAB SİSTEMİ ---
     window.switchTab = (id, el) => {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -113,61 +129,67 @@
         el.classList.add('active');
     };
 
-    // --- AUTH FİX ---
-    onAuthStateChanged(auth, (user) => {
+    // --- SAYAÇ VE AUTH ---
+    onSnapshot(doc(db, "stats", "members"), (d) => {
+        if(d.exists()) document.getElementById('memberCount').innerText = d.data().count;
+    });
+
+    onAuthStateChanged(auth, async (user) => {
         if(user) {
-            document.getElementById('authFloat').style.display = 'none';
-            document.getElementById('chatInputBar').style.display = 'flex';
+            document.getElementById('authArea').style.display = 'none';
+            document.getElementById('msgInputArea').style.display = 'flex';
             document.getElementById('loginWarn').style.display = 'none';
             if(user.email === ADMIN_MAIL) document.getElementById('adminPanel').style.display = 'block';
+
+            // Üye Kayıt & Sayaç Artırma
+            const uRef = doc(db, "users", user.uid);
+            const uSnap = await getDoc(uRef);
+            if(!uSnap.exists()) {
+                await setDoc(uRef, { name: user.displayName, email: user.email });
+                const sRef = doc(db, "stats", "members");
+                await updateDoc(sRef, { count: increment(1) }).catch(async () => await setDoc(sRef, {count: 1}));
+            }
         }
     });
+
     document.getElementById('googleBtn').onclick = () => signInWithPopup(auth, provider);
 
-    // --- DUYURU SİSTEMİ FİX ---
-    window.postAnn = async () => {
+    // --- DUYURU SİSTEMİ ---
+    document.getElementById('btnAnn').onclick = async () => {
         const val = document.getElementById('annInput').value;
         if(val.trim()) {
-            await addDoc(collection(db, "announcements"), { 
-                text: val, 
-                createdAt: serverTimestamp() 
-            });
+            await addDoc(collection(db, "announcements"), { text: val, time: serverTimestamp() });
             document.getElementById('annInput').value = "";
         }
     };
 
-    onSnapshot(query(collection(db, "announcements"), orderBy("createdAt", "desc")), (snap) => {
+    onSnapshot(query(collection(db, "announcements"), orderBy("time", "desc")), (snap) => {
         const list = document.getElementById('annList');
         list.innerHTML = "";
         snap.forEach(doc => {
-            list.innerHTML += `<div class="card ann-card"><strong><i class="fas fa-crown"></i> NECRONVO</strong><br>${doc.data().text}</div>`;
+            list.innerHTML += `<div class="card ann-card"><div class="card-header"><i class="fas fa-crown"></i> NECRONVO</div>${doc.data().text}</div>`;
         });
     });
 
-    // --- CHAT SİSTEMİ FİX ---
-    window.sendChat = async () => {
+    // --- CHAT SİSTEMİ ---
+    document.getElementById('btnChat').onclick = async () => {
         const val = document.getElementById('chatInput').value;
         if(val.trim() && auth.currentUser) {
-            await addDoc(collection(db, "messages"), {
-                name: auth.currentUser.displayName,
-                text: val,
-                createdAt: serverTimestamp()
-            });
+            await addDoc(collection(db, "messages"), { name: auth.currentUser.displayName, text: val, time: serverTimestamp() });
             document.getElementById('chatInput').value = "";
         }
     };
 
-    // Mesajları çek ve en sonuncuyu altta göster
-    onSnapshot(query(collection(db, "messages"), orderBy("createdAt", "desc"), limit(40)), (snap) => {
+    onSnapshot(query(collection(db, "messages"), orderBy("time", "asc")), (snap) => {
         const box = document.getElementById('chatBox');
         box.innerHTML = "";
         snap.forEach(doc => {
-            const data = doc.data();
-            box.innerHTML += `<div class="card"><span class="user-name">${data.name}</span>${data.text}</div>`;
+            const d = doc.data();
+            box.innerHTML += `<div class="card"><span style="font-size:0.7rem; color:#888; display:block;">${d.name}</span>${d.text}</div>`;
         });
+        box.scrollTop = box.scrollHeight;
     });
-</script>
 
+</script>
 </body>
 </html>
-
