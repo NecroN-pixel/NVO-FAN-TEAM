@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NVO FAN TEAM | Sosyal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --yt-red: #ff0000; --bg: #050505; --card: #121212; --text: #ffffff; --chat-bg: #1a1a1a; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; }
+
+        .container { max-width: 550px; margin: auto; padding: 15px; }
+        
+        /* Sekme Sistemi */
+        .tabs { display: flex; background: #111; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #333; }
+        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: #777; font-weight: bold; border-bottom: 3px solid transparent; }
+        .tab.active { color: var(--yt-red); border-bottom-color: var(--yt-red); }
+
+        /* Duyurular ve Chat Alanları */
+        .content-section { display: none; animation: fadeIn 0.4s ease; }
+        .content-section.active { display: block; }
+
+        /* Sohbet Balonları */
+        .chat-container { height: 60vh; overflow-y: auto; background: var(--chat-bg); border-radius: 15px; padding: 15px; margin-bottom: 10px; border: 1px solid #222; }
+        .msg { margin-bottom: 12px; padding: 10px; border-radius: 10px; background: #252525; word-wrap: break-word; }
+        .msg-user { font-size: 0.75rem; color: var(--yt-red); font-weight: bold; margin-bottom: 3px; display: block; }
+        .msg-text { font-size: 0.95rem; color: #eee; }
+
+        /* Giriş ve Input Alanları */
+        .input-group { display: flex; gap: 8px; margin-top: 10px; }
+        textarea, input[type="text"] { flex: 1; padding: 12px; border-radius: 10px; background: #222; color: white; border: 1px solid #444; }
+        .btn { padding: 12px 20px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; background: var(--yt-red); color: white; }
+
+        /* Admin Kartı */
+        .admin-box { background: #1a1a1a; padding: 15px; border-radius: 15px; border: 1px solid var(--yt-red); margin-bottom: 20px; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<header style="text-align:center; padding: 20px; background: #111;">
+    <div style="font-size: 1.8rem; font-weight: 900; color: var(--yt-red);">NVO FAN TEAM</div>
+</header>
+
+<div class="tabs">
+    <div class="tab active" onclick="showTab('announcements', this)">DUYURULAR</div>
+    <div class="tab" onclick="showTab('chat', this)">CHAT</div>
+</div>
+
+<div class="container">
+    <div id="announcements" class="content-section active">
+        <div id="adminPanel" class="admin-box" style="display:none;">
+            <p style="margin:0 0 10px 0; font-size: 0.8rem; font-weight: bold;">KURUCU PANELİ</p>
+            <textarea id="annInput" placeholder="Yeni duyuru yaz..."></textarea>
+            <button class="btn" style="width:100%; margin-top:10px;" id="btnAnn">YAYINLA</button>
+        </div>
+        <div id="annFeed"></div>
+    </div>
+
+    <div id="chat" class="content-section">
+        <div id="chatLoginWarn" style="text-align:center; padding: 20px; color: #888;">Chat'e yazmak için giriş yapmalısın.</div>
+        <div class="chat-container" id="chatBox"></div>
+        <div class="input-group" id="chatInputArea" style="display:none;">
+            <input type="text" id="chatInput" placeholder="Mesaj yazın...">
+            <button class="btn" id="btnChat"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<div id="authFloat" style="position:fixed; bottom: 85px; width: 100%; padding: 0 15px;">
+    <button class="btn" id="googleLogin" style="background:white; color:black; width:100%; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Google ile Giriş Yap
+    </button>
+</div>
+
+<nav style="position:fixed; bottom:0; width:100%; background:#000; display:flex; justify-content:space-around; padding:15px; border-top:1px solid #222;">
+    <a href="#" style="color:var(--yt-red); text-decoration:none;"><i class="fas fa-home"></i></a>
+    <a href="https://youtube.com/@necronvo" style="color:#666;"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.instagram.com/necron.vo" style="color:#666;"><i class="fab fa-instagram"></i></a>
+</nav>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAh1FMjRRyQsiRUf1YKf0htPDSP-I8j-J8",
+        authDomain: "nvo-fan.firebaseapp.com",
+        projectId: "nvo-fan",
+        storageBucket: "nvo-fan.firebasestorage.app",
+        messagingSenderId: "724570776040",
+        appId: "1:724570776040:web:fdae1a49175a6bd44ac45d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    const ADMIN_MAIL = "necron.offical@gmail.com";
+
+    // --- TAB SİSTEMİ ---
+    window.showTab = (id, el) => {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        el.classList.add('active');
+    };
+
+    // --- OTURUM ---
+    onAuthStateChanged(auth, (user) => {
+        if(user) {
+            document.getElementById('authFloat').style.display = 'none';
+            document.getElementById('chatInputArea').style.display = 'flex';
+            document.getElementById('chatLoginWarn').style.display = 'none';
+            if(user.email === ADMIN_MAIL) document.getElementById('adminPanel').style.display = 'block';
+        }
+    });
+
+    document.getElementById('googleLogin').onclick = () => signInWithPopup(auth, provider);
+
+    // --- DUYURU SİSTEMİ ---
+    document.getElementById('btnAnn').onclick = async () => {
+        const txt = document.getElementById('annInput').value;
+        if(txt.trim()) {
+            await addDoc(collection(db, "announcements"), { text: txt, time: new Date() });
+            document.getElementById('annInput').value = "";
+        }
+    };
+
+    onSnapshot(query(collection(db, "announcements"), orderBy("time", "desc")), (snap) => {
+        const feed = document.getElementById('annFeed');
+        feed.innerHTML = "";
+        snap.forEach(doc => {
+            feed.innerHTML += `<div class="msg" style="border-left:4px solid red"><b>KURUCU DUYURUSU</b><br>${doc.data().text}</div>`;
+        });
+    });
+
+    // --- CHAT SİSTEMİ ---
+    document.getElementById('btnChat').onclick = async () => {
+        const txt = document.getElementById('chatInput').value;
+        if(txt.trim() && auth.currentUser) {
+            await addDoc(collection(db, "messages"), {
+                user: auth.currentUser.displayName,
+                text: txt,
+                time: new Date()
+            });
+            document.getElementById('chatInput').value = "";
+        }
+    };
+
+    onSnapshot(query(collection(db, "messages"), orderBy("time", "desc"), limit(50)), (snap) => {
+        const box = document.getElementById('chatBox');
+        box.innerHTML = "";
+        snap.forEach(doc => {
+            const d = doc.data();
+            box.innerHTML += `<div class="msg"><span class="msg-user">${d.user}</span><span class="msg-text">${d.text}</span></div>`;
+        });
+    });
+
+</script>
+</body>
+</html>
