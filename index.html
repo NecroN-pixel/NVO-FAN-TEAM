@@ -1,105 +1,166 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NVO FAN TEAM | Elite Social</title>
+    <title>NVO FAN TEAM | Ultimate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --main: #00f2ff; --dark: #020b10; --card: #05161d; --border: rgba(0, 242, 255, 0.2); }
+        :root { --main: #00f2ff; --bg: #050505; --card: #101010; --border: #333; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; }
-        body { background: var(--dark); color: #fff; padding-bottom: 80px; overflow-x: hidden; }
+        body { background: var(--bg); color: #fff; padding-bottom: 80px; overflow-x: hidden; }
 
-        header { padding: 15px; background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--main); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--main); text-align: center; letter-spacing: 3px; text-shadow: 0 0 10px var(--main); }
+        /* Header & Duyuru */
+        header { background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--main); position: sticky; top: 0; z-index: 1000; padding: 10px; }
+        .logo { font-family: 'Orbitron', sans-serif; text-align: center; color: var(--main); font-size: 1.2rem; letter-spacing: 2px; }
+        .ticker { background: rgba(0, 242, 255, 0.1); color: var(--main); font-size: 0.8rem; white-space: nowrap; overflow: hidden; padding: 5px; border-bottom: 1px solid var(--main); }
+        .ticker span { display: inline-block; animation: scroll 15s linear infinite; }
+        @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 
         .container { max-width: 500px; margin: auto; padding: 15px; }
 
-        /* Kart Yapıları */
-        .glass-card { background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
-        
-        /* Oda Listesi & Butonlar */
-        .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .room-item { background: #081f29; border: 1px solid var(--border); padding: 12px; border-radius: 8px; position: relative; cursor: pointer; }
-        .room-item:hover { border-color: var(--main); }
-        .room-id { position: absolute; top: 5px; right: 8px; font-size: 0.6rem; color: var(--main); font-weight: bold; }
+        /* Sosyal Butonlar */
+        .social-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .s-btn { padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.8rem; display: flex; alignItems: center; gap: 5px; }
+        .yt { background: #ff0000; color: #fff; }
+        .ig { background: linear-gradient(45deg, #f09433, #bc1888); color: #fff; }
 
-        input { width: 100%; padding: 12px; background: #000; border: 1px solid #1a3a4a; color: #fff; border-radius: 8px; margin-top: 8px; outline: none; }
-        input:focus { border-color: var(--main); box-shadow: 0 0 10px rgba(0,242,255,0.2); }
-        .btn { width: 100%; padding: 14px; background: var(--main); color: #000; border: none; border-radius: 8px; font-weight: 900; margin-top: 10px; cursor: pointer; text-transform: uppercase; }
+        /* Kartlar ve Girdiler */
+        .card { background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; margin-top: 5px; outline: none; }
+        input:focus { border-color: var(--main); }
+        .btn { width: 100%; padding: 12px; background: var(--main); color: #000; font-weight: 900; border: none; border-radius: 5px; margin-top: 10px; cursor: pointer; }
 
-        /* Chat */
-        #chatBox { height: 350px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; }
-        .msg { margin-bottom: 8px; border-left: 2px solid var(--main); padding-left: 8px; font-size: 0.9rem; }
-        .msg b { color: var(--main); }
+        /* Twitter Tarzı Feed */
+        .post { border-bottom: 1px solid #222; padding: 10px 0; display: flex; gap: 10px; }
+        .p-img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--main); object-fit: cover; }
+        .p-content { flex: 1; }
+        .p-name { color: var(--main); font-weight: bold; font-size: 0.9rem; }
+        .p-text { font-size: 0.95rem; color: #ddd; margin-top: 2px; }
+
+        /* Oda Sistemi */
+        .room-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .room-box { background: #0a0a0a; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 8px; cursor: pointer; position: relative; }
+        .room-box:hover { border-color: var(--main); }
+        .r-id { font-size: 1.5rem; font-weight: bold; color: var(--main); display: block; }
+        .r-lock { position: absolute; top: 5px; right: 5px; font-size: 0.7rem; color: #666; }
+
+        /* Bilgi Kutusu */
+        .info-box { background: rgba(255, 255, 255, 0.05); padding: 10px; font-size: 0.8rem; border-left: 3px solid var(--main); margin-top: 10px; }
 
         /* Navigasyon */
-        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(2, 11, 16, 0.95); display: flex; justify-content: space-around; padding: 18px; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav i { font-size: 1.4rem; color: #3a5a6a; cursor: pointer; transition: 0.3s; }
+        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid var(--main); display: flex; justify-content: space-around; padding: 15px; z-index: 999; }
+        .nav i { font-size: 1.4rem; color: #444; cursor: pointer; }
         .nav i.active { color: var(--main); text-shadow: 0 0 10px var(--main); }
 
-        .page { display: none; } .page.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page { display: none; } .page.active { display: block; }
     </style>
 </head>
 <body>
 
-    <header><div class="logo">NVO FAN TEAM</div></header>
+    <header>
+        <div class="logo">NVO FAN TEAM</div>
+    </header>
+    <div class="ticker"><span id="tickerText">Yükleniyor...</span></div>
 
     <div class="container">
-        <div id="homePage" class="page active">
-            <div class="glass-card">
-                <h3>Oda Kur</h3>
-                <input type="text" id="roomNameIn" placeholder="Oda Adı">
-                <input type="password" id="roomPassIn" placeholder="Şifre (İsteğe Bağlı)">
-                <button onclick="createRoom()" class="btn">Odayı Oluştur</button>
-            </div>
-            <div id="roomList" class="room-grid"></div>
+        <div class="social-row">
+            <a href="https://youtube.com/@necronvo" target="_blank" class="s-btn yt"><i class="fab fa-youtube"></i> YouTube</a>
+            <a href="https://instagram.com/necron.vo" target="_blank" class="s-btn ig"><i class="fab fa-instagram"></i> Instagram</a>
         </div>
 
-        <div id="chatPage" class="page">
-            <div class="glass-card">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h4 id="activeRoomTitle">Oda</h4>
-                    <button onclick="leaveRoom()" style="background:none; border:none; color:red; font-weight:bold; cursor:pointer;">ODADAN ÇIK</button>
+        <div id="adminPanel" class="card" style="display:none; border-color:red;">
+            <small style="color:red">ADMİN DUYURU PANELİ</small>
+            <input type="text" id="annText" placeholder="Duyuru metni...">
+            <button onclick="setAnn()" class="btn" style="background:red; color:#fff;">YAYINLA</button>
+        </div>
+
+        <div id="homePage" class="page active">
+            <div id="postArea" class="card" style="display:none;">
+                <input type="text" id="feedIn" placeholder="Neler oluyor? (Mesajını yaz...)">
+                <button onclick="sendFeed()" class="btn">PAYLAŞ</button>
+            </div>
+            <div id="feedList" style="padding-bottom:20px;"></div>
+        </div>
+
+        <div id="globalPage" class="page">
+            <div class="card" style="height:70vh; display:flex; flex-direction:column;">
+                <h3 style="text-align:center; color:var(--main); border-bottom:1px solid #333; padding-bottom:10px;">GLOBAL CHAT</h3>
+                <div id="globalBox" style="flex:1; overflow-y:auto; padding:10px;"></div>
+                <div style="display:flex; gap:5px; padding-top:10px; border-top:1px solid #333;">
+                    <input type="text" id="globalIn" placeholder="Herkese mesaj gönder..." style="margin:0;">
+                    <button onclick="sendGlobal()" class="btn" style="width:auto; margin:0;"><i class="fas fa-paper-plane"></i></button>
                 </div>
-                <hr style="border:0; border-top:1px solid var(--border); margin:10px 0;">
-                <div id="chatBox"></div>
-                <div id="chatInputArea" style="display:flex; gap:5px;">
-                    <input type="text" id="mIn" placeholder="Mesajın..." style="margin:0;">
-                    <button onclick="sendMsg()" class="btn" style="margin:0; width:auto; padding:0 20px;">GÖNDER</button>
+            </div>
+        </div>
+
+        <div id="roomsPage" class="page">
+            <div class="card">
+                <h3>ÖZEL ODA OLUŞTUR</h3>
+                <p style="font-size:0.8rem; color:#888;">ID otomatik verilir. Şifre opsiyoneldir.</p>
+                <input type="password" id="newRoomPass" placeholder="Oda Şifresi (Boş bırakılabilir)">
+                <button onclick="createRoom()" class="btn">ODAYI KUR (RASTGELE ID)</button>
+            </div>
+
+            <div class="card">
+                <input type="text" id="searchIn" onkeyup="searchRoom()" placeholder="Oda ID Ara... (Örn: 42)">
+                <div id="roomList" class="room-grid"></div>
+            </div>
+        </div>
+
+        <div id="activeRoomPage" class="page">
+            <div class="card" style="height:70vh; display:flex; flex-direction:column;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--main); padding-bottom:10px;">
+                    <h3 id="roomTitle">ODA #00</h3>
+                    <button onclick="leaveRoom()" style="background:red; color:#fff; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;">ÇIK</button>
+                </div>
+                <div id="roomBox" style="flex:1; overflow-y:auto; padding:10px;"></div>
+                <div style="display:flex; gap:5px; padding-top:10px; border-top:1px solid #333;">
+                    <input type="text" id="roomIn" placeholder="Odaya yaz..." style="margin:0;">
+                    <button onclick="sendRoomMsg()" class="btn" style="width:auto; margin:0;"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>
 
         <div id="profPage" class="page">
-            <div class="glass-card" style="text-align: center;">
-                <img id="uImg" src="" style="width:80px;height:80px;border-radius:50%;border:2px solid var(--main);object-fit:cover;">
-                <h2 id="uName" style="margin:10px 0;">Profil</h2>
-                <div style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;">
-                    <a href="https://youtube.com/@necronvo" target="_blank" style="color:red"><i class="fab fa-youtube fa-lg"></i></a>
-                    <a href="https://instagram.com/necron.vo" target="_blank" style="color:#e1306c"><i class="fab fa-instagram fa-lg"></i></a>
+            <div class="card" style="text-align:center;">
+                <img id="uImg" src="" style="width:100px; height:100px; border-radius:50%; border:2px solid var(--main); object-fit:cover;">
+                <h2 id="uName" style="margin:10px 0;">Misafir</h2>
+                
+                <div class="info-box" style="text-align:left;">
+                    <strong style="color:var(--main)">FOTOĞRAF NASIL YÜKLENİR?</strong><br>
+                    1. Hizliresim.com'a girin.<br>
+                    2. Resmi yükleyin.<br>
+                    3. Size verilen linki kopyalayın.<br>
+                    4. Aşağıdaki kutuya yapıştırın. Sistem otomatik ayarlar.
                 </div>
-                <input type="text" id="picUrl" placeholder="Profil Resim Kodu">
-                <input type="text" id="nameIn" placeholder="Nick Değiştir">
-                <button onclick="saveP()" class="btn">Kaydet</button>
-                <button onclick="out()" class="btn" style="background:#111; color:#fff; font-size:0.7rem;">Çıkış Yap</button>
+
+                <input type="text" id="picUrl" placeholder="Resim Linki / Kodu Buraya">
+                <input type="text" id="nameIn" placeholder="Yeni İsim (Nick)">
+                <button onclick="saveProfile()" class="btn">PROFİLİ KAYDET</button>
+                <button onclick="logout()" class="btn" style="background:#222; color:#fff; margin-top:15px;">ÇIKIŞ YAP</button>
             </div>
         </div>
 
-        <div id="loginArea" style="text-align:center; display:none;"><button onclick="login()" class="btn" style="background:#fff; color:#000;">Google Girişi</button></div>
+        <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:2000; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <div class="logo" style="font-size:2rem; margin-bottom:20px;">NVO FAN TEAM</div>
+            <button onclick="login()" class="btn" style="width:200px; background:#fff; color:#000;">GOOGLE İLE GİRİŞ</button>
+        </div>
     </div>
 
     <nav class="nav">
-        <i class="fas fa-door-open active" onclick="nav('home', this)"></i>
+        <i class="fas fa-home active" onclick="nav('home', this)"></i>
+        <i class="fas fa-globe" onclick="nav('global', this)"></i>
+        <i class="fas fa-door-closed" onclick="nav('rooms', this)"></i>
         <i class="fas fa-user" onclick="nav('prof', this)"></i>
     </nav>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, addDoc, query, orderBy, serverTimestamp, where, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, addDoc, query, orderBy, serverTimestamp, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const cfg = {
         apiKey: "AIzaSyAh1FMjRRyQsiRUf1YKf0htPDSP-I8j-J8",
@@ -116,22 +177,33 @@
     const prov = new GoogleAuthProvider();
 
     let user = null;
-    let myRoomId = null;
-    let unsubChat = null;
+    let currentRoomId = null;
+    let unsubRoom = null;
 
-    function extractSrc(i) { const m = i.match(/src="([^"]+)"/); return m ? m[1] : i; }
+    // Link Ayıklayıcı
+    function getLink(i) { const m = i.match(/src="([^"]+)"/); return m ? m[1] : i; }
 
     window.nav = (p, el) => {
         document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-        document.getElementById(p + 'Page').classList.add('active');
-        document.querySelectorAll('.nav i').forEach(i => i.classList.remove('active'));
-        if(el) el.classList.add('active');
+        if(p === 'activeRoom') document.getElementById('activeRoomPage').classList.add('active');
+        else document.getElementById(p + 'Page').classList.add('active');
+        
+        if(el) {
+            document.querySelectorAll('.nav i').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
     };
 
+    // AUTH
     onAuthStateChanged(auth, async (u) => {
         if(u) {
             user = u;
-            document.getElementById('loginArea').style.display = 'none';
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('postArea').style.display = 'block';
+            
+            // Admin Kontrolü
+            if(u.email === "necron.offical@gmail.com") document.getElementById('adminPanel').style.display = 'block';
+
             const r = doc(db, "users", u.uid);
             const s = await getDoc(r);
             if(!s.exists()) await setDoc(r, { name: u.displayName, photo: u.photoURL });
@@ -141,103 +213,134 @@
                 document.getElementById('uName').innerText = d.name;
             }
         } else {
-            document.getElementById('loginArea').style.display = 'block';
+            document.getElementById('loginOverlay').style.display = 'flex';
         }
     });
 
-    // ODA OLUŞTURMA
-    window.createRoom = async () => {
-        const name = document.getElementById('roomNameIn').value;
-        const pass = document.getElementById('roomPassIn').value;
-        const rid = Math.floor(Math.random() * 101); // 0-100 ID
+    window.login = () => signInWithPopup(auth, prov);
+    window.logout = () => signOut(auth).then(() => location.reload());
 
-        if(name.trim()){
-            await setDoc(doc(db, "rooms", rid.toString()), {
-                name: name,
-                pass: pass || null,
-                users: 1,
-                id: rid
-            });
-            joinRoom(rid.toString(), pass || null);
-        }
+    // 1. DUYURU SİSTEMİ
+    onSnapshot(doc(db, "stats", "ticker"), d => { if(d.exists()) document.getElementById('tickerText').innerText = d.data().text + "  •  " + d.data().text; });
+    window.setAnn = async () => {
+        const t = document.getElementById('annText').value;
+        if(t) await setDoc(doc(db, "stats", "ticker"), { text: t });
     };
 
-    // ODA LİSTESİ
-    onSnapshot(collection(db, "rooms"), snap => {
-        const list = document.getElementById('roomList');
-        list.innerHTML = "";
+    // 2. ANA SAYFA FEED (TWITTER TARZI)
+    window.sendFeed = async () => {
+        const t = document.getElementById('feedIn').value;
+        const u = await getDoc(doc(db, "users", user.uid));
+        if(t.trim()) {
+            await addDoc(collection(db, "posts"), { name: u.data().name, photo: u.data().photo, text: t, time: serverTimestamp() });
+            document.getElementById('feedIn').value = "";
+        }
+    };
+    onSnapshot(query(collection(db, "posts"), orderBy("time", "desc")), snap => {
+        const l = document.getElementById('feedList'); l.innerHTML = "";
         snap.forEach(d => {
-            const r = d.data();
-            list.innerHTML += `
-                <div class="room-item" onclick="joinRoom('${d.id}', '${r.pass}')">
-                    <span class="room-id">#${r.id}</span>
-                    <small>${r.pass ? '🔒 Şifreli' : '🔓 Genel'}</small><br>
-                    <b>${r.name}</b>
-                </div>`;
+            const p = d.data();
+            l.innerHTML += `<div class="post"><img src="${p.photo}" class="p-img"><div class="p-content"><div class="p-name">${p.name}</div><div class="p-text">${p.text}</div></div></div>`;
         });
     });
 
-    // ODAYA GİRİŞ
+    // 3. GLOBAL CHAT
+    window.sendGlobal = async () => {
+        const t = document.getElementById('globalIn').value;
+        const u = await getDoc(doc(db, "users", user.uid));
+        if(t.trim()) {
+            await addDoc(collection(db, "globalchat"), { name: u.data().name, text: t, time: serverTimestamp() });
+            document.getElementById('globalIn').value = "";
+        }
+    };
+    onSnapshot(query(collection(db, "globalchat"), orderBy("time", "asc")), snap => {
+        const b = document.getElementById('globalBox'); b.innerHTML = "";
+        snap.forEach(d => {
+            const m = d.data();
+            b.innerHTML += `<div style="margin-bottom:5px; font-size:0.9rem;"><b style="color:var(--main)">${m.name}:</b> ${m.text}</div>`;
+        });
+        b.scrollTop = b.scrollHeight;
+    });
+
+    // 4. ÖZEL ODA SİSTEMİ
+    window.createRoom = async () => {
+        const pass = document.getElementById('newRoomPass').value;
+        const rid = Math.floor(Math.random() * 999) + 1; // 1-999 arası ID
+        
+        await setDoc(doc(db, "rooms", rid.toString()), { id: rid, pass: pass || null, users: 0 });
+        joinRoom(rid.toString(), pass || null);
+    };
+
+    onSnapshot(collection(db, "rooms"), snap => {
+        const l = document.getElementById('roomList'); l.innerHTML = "";
+        snap.forEach(d => {
+            const r = d.data();
+            l.innerHTML += `<div class="room-box" data-id="${r.id}" onclick="joinRoom('${r.id}', '${r.pass}')">
+                ${r.pass ? '<i class="fas fa-lock r-lock"></i>' : ''}
+                <span class="r-id">#${r.id}</span>
+            </div>`;
+        });
+    });
+
+    window.searchRoom = () => {
+        const val = document.getElementById('searchIn').value;
+        document.querySelectorAll('.room-box').forEach(el => {
+            el.style.display = el.getAttribute('data-id').includes(val) ? 'block' : 'none';
+        });
+    };
+
     window.joinRoom = async (rid, pass) => {
-        if(pass && pass !== "null"){
+        if(pass && pass !== "null") {
             const p = prompt("Oda Şifresi:");
-            if(p !== pass) return alert("Hatalı Şifre!");
+            if(p !== pass) return alert("Yanlış Şifre");
         }
-        myRoomId = rid;
-        document.getElementById('activeRoomTitle').innerText = "Oda #" + rid;
+        currentRoomId = rid;
         await updateDoc(doc(db, "rooms", rid), { users: increment(1) });
-        nav('chat', null);
-        loadChat();
+        document.getElementById('roomTitle').innerText = "ODA #" + rid;
+        nav('activeRoom', null); // Gizli sayfayı aç
+        loadRoomChat();
     };
 
-    // ODADAN ÇIKIŞ VE OTOMATİK SİLME
     window.leaveRoom = async () => {
-        const rRef = doc(db, "rooms", myRoomId);
-        const rSnap = await getDoc(rRef);
-        if(rSnap.exists()){
-            const newCount = rSnap.data().users - 1;
-            if(newCount <= 0) await deleteDoc(rRef); // ODA BOŞSA SİL
-            else await updateDoc(rRef, { users: newCount });
+        const rRef = doc(db, "rooms", currentRoomId);
+        const s = await getDoc(rRef);
+        if(s.exists()) {
+            const n = s.data().users - 1;
+            if(n <= 0) await deleteDoc(rRef);
+            else await updateDoc(rRef, { users: n });
         }
-        myRoomId = null;
-        nav('home', document.querySelector('.fa-door-open'));
+        currentRoomId = null;
+        if(unsubRoom) unsubRoom();
+        nav('rooms', document.querySelector('.fa-door-closed'));
     };
 
-    function loadChat() {
-        if(unsubChat) unsubChat();
-        const q = query(collection(db, "rooms", myRoomId, "msgs"), orderBy("time", "asc"));
-        unsubChat = onSnapshot(q, snap => {
-            const box = document.getElementById('chatBox');
-            box.innerHTML = "";
+    function loadRoomChat() {
+        const q = query(collection(db, "rooms", currentRoomId, "msgs"), orderBy("time", "asc"));
+        unsubRoom = onSnapshot(q, snap => {
+            const b = document.getElementById('roomBox'); b.innerHTML = "";
             snap.forEach(d => {
                 const m = d.data();
-                box.innerHTML += `<div class="msg"><b>${m.name}:</b> ${m.text}</div>`;
+                b.innerHTML += `<div style="margin-bottom:5px;"><b style="color:var(--main)">${m.name}:</b> ${m.text}</div>`;
             });
-            box.scrollTop = box.scrollHeight;
+            b.scrollTop = b.scrollHeight;
         });
     }
 
-    window.sendMsg = async () => {
-        const t = document.getElementById('mIn').value;
+    window.sendRoomMsg = async () => {
+        const t = document.getElementById('roomIn').value;
         const u = await getDoc(doc(db, "users", user.uid));
-        if(t.trim() && myRoomId){
-            await addDoc(collection(db, "rooms", myRoomId, "msgs"), {
-                name: u.data().name,
-                text: t,
-                time: serverTimestamp()
-            });
-            document.getElementById('mIn').value = "";
+        if(t.trim() && currentRoomId) {
+            await addDoc(collection(db, "rooms", currentRoomId, "msgs"), { name: u.data().name, text: t, time: serverTimestamp() });
+            document.getElementById('roomIn').value = "";
         }
     };
 
-    window.login = () => signInWithPopup(auth, prov);
-    window.out = () => signOut(auth).then(() => location.reload());
-    window.saveP = async () => {
+    // PROFİL KAYIT
+    window.saveProfile = async () => {
         const n = document.getElementById('nameIn').value;
-        const p = extractSrc(document.getElementById('picUrl').value);
-        if(n.trim()){ await updateDoc(doc(db, "users", user.uid), { name: n, photo: p }); location.reload(); }
+        const p = getLink(document.getElementById('picUrl').value);
+        if(n.trim()) { await updateDoc(doc(db, "users", user.uid), { name: n, photo: p }); location.reload(); }
     };
-    function increment(v) { return v + 1; }
 </script>
 </body>
 </html>
