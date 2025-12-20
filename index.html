@@ -1,137 +1,105 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NVO FAN | V24 Admin Connect</title>
+    <title>NVO FAN | Admin @MEwls</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --x-blue: #1d9bf0; --x-bg: #000000; --x-border: #2f3336; --x-text: #e7e9ea; --x-gray: #71767b; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background: var(--x-bg); color: var(--x-text); overflow-x: hidden; }
 
-        /* YAN MENÜ (SIDEBAR) */
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #000; z-index: 2000; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid var(--x-border); padding: 25px 20px; }
+        /* SIDEBAR */
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #000; z-index: 5001; transition: 0.3s; border-right: 1px solid var(--x-border); padding: 25px 20px; }
         .sidebar.active { left: 0; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(91, 112, 131, 0.4); z-index: 1999; display: none; }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(91, 112, 131, 0.4); z-index: 5000; display: none; }
         .sidebar-overlay.active { display: block; }
         
-        .nvo-brand { font-weight: 900; font-size: 1.5rem; color: #fff; margin-bottom: 30px; letter-spacing: -1px; }
-        .nvo-brand span { color: var(--x-blue); border: 1.5px solid var(--x-blue); padding: 0 5px; border-radius: 4px; margin-right: 4px; }
+        .nvo-logo { font-weight: 900; font-size: 1.5rem; color: #fff; margin-bottom: 30px; }
+        .nvo-logo span { color: var(--x-blue); border: 1.5px solid var(--x-blue); padding: 0 5px; border-radius: 4px; margin-right: 4px; }
 
-        .menu-link { display: flex; align-items: center; gap: 20px; padding: 15px 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; color: #fff; text-decoration: none; border-radius: 10px; transition: 0.2s; }
-        .menu-link:hover { background: rgba(255,255,255,0.1); }
-        .menu-link i { width: 25px; text-align: center; }
+        .menu-item { display: flex; align-items: center; gap: 15px; padding: 15px 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; color: #fff; text-decoration: none; border-radius: 10px; }
+        .menu-item:hover { background: rgba(255,255,255,0.1); }
+        .admin-only { display: none; border: 1px dashed var(--x-blue); margin-top: 10px; color: var(--x-blue); }
 
-        /* ÜST HEADER */
-        header { 
-            border-bottom: 1px solid var(--x-border); padding: 12px 16px; 
-            position: sticky; top: 0; background: rgba(0,0,0,0.85); 
-            backdrop-filter: blur(12px); z-index: 1000; display: flex; align-items: center; gap: 25px;
-        }
-        .header-title { font-weight: bold; font-size: 1.2rem; flex: 1; }
-
+        /* HEADER */
+        header { border-bottom: 1px solid var(--x-border); padding: 12px 16px; position: sticky; top: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; display: flex; align-items: center; gap: 20px; }
+        
         .container { max-width: 600px; margin: auto; border-left: 1px solid var(--x-border); border-right: 1px solid var(--x-border); min-height: 100vh; }
 
-        /* TWEET ALANI */
-        .tweet-box { border-bottom: 1px solid var(--x-border); padding: 15px; display: flex; gap: 12px; }
-        .avatar { width: 42px; height: 42px; border-radius: 50%; background: #222; object-fit: cover; }
-        .tweet-input { flex: 1; }
-        textarea { width: 100%; background: transparent; border: none; color: #fff; font-size: 1.25rem; outline: none; resize: none; min-height: 50px; }
-        .tweet-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 0.5px solid var(--x-border); margin-top: 10px; }
-        .post-btn { background: var(--x-blue); color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        /* POST AREA */
+        .post-box { border-bottom: 1px solid var(--x-border); padding: 15px; display: flex; gap: 12px; }
+        .avatar { width: 45px; height: 45px; border-radius: 50%; background: #222; }
+        textarea { width: 100%; background: transparent; border: none; color: #fff; font-size: 1.2rem; outline: none; resize: none; min-height: 60px; }
+        .btn-post { background: var(--x-blue); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; float: right; }
 
-        /* POSTLAR */
-        .post { border-bottom: 1px solid var(--x-border); padding: 15px; display: flex; gap: 12px; transition: 0.2s; cursor: pointer; }
-        .post:hover { background: rgba(255,255,255,0.03); }
-        .p-name { font-weight: bold; color: #fff; }
-        .p-handle { color: var(--x-gray); font-size: 0.9rem; }
-        .p-text { font-size: 1rem; line-height: 1.5; margin-top: 4px; color: #e7e9ea; }
-        .p-actions { display: flex; justify-content: space-between; color: var(--x-gray); margin-top: 12px; max-width: 400px; font-size: 0.85rem; }
+        /* LIST */
+        .tweet { border-bottom: 1px solid var(--x-border); padding: 15px; display: flex; gap: 12px; cursor: pointer; }
+        .tweet:hover { background: rgba(255,255,255,0.02); }
+        .t-name { font-weight: bold; }
+        .t-admin-badge { color: var(--x-blue); font-size: 0.8rem; margin-left: 5px; }
 
-        /* ALT NAV */
-        nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid var(--x-border); display: flex; justify-content: space-around; padding: 15px; z-index: 1000; }
-        nav i { font-size: 1.5rem; color: #fff; cursor: pointer; }
-        nav i.active { color: var(--x-blue); }
+        /* NAV */
+        nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid var(--x-border); display: flex; justify-content: space-around; padding: 15px; }
+        nav i { font-size: 1.5rem; cursor: pointer; }
 
-        /* GİRİŞ EKRANI */
-        #loginOverlay { position: fixed; inset: 0; background: #000; z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .log-btn { width: 280px; padding: 14px; border-radius: 30px; border: none; font-weight: bold; margin-bottom: 15px; cursor: pointer; font-size: 1rem; }
-
+        #login { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .page { display: none; } .page.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
-    <div class="sidebar" id="sidebar">
-        <div class="nvo-brand"><span>NVO</span>FAN</div>
-        
-        <div class="menu-link" onclick="openProfile(); closeSidebar()">
-            <i class="far fa-user"></i> Profil
-        </div>
-
-        <a href="https://nvo-fan.web.app/admin" class="menu-link">
-            <i class="fas fa-shield-halved"></i> NVO Admin Sayfası
-        </a>
-
-        <div class="menu-link"><i class="far fa-bookmark"></i> Yer İşaretleri</div>
-        <div class="menu-link"><i class="fas fa-bolt"></i> Premium</div>
-        
-        <div style="margin-top: auto; border-top: 1px solid var(--x-border); padding-top: 20px;">
-            <div class="menu-link" onclick="location.reload()" style="color: #f4212e;">
-                <i class="fas fa-arrow-right-from-bracket"></i> Çıkış Yap
-            </div>
-        </div>
+    <div id="login">
+        <div class="nvo-logo" style="font-size: 3rem;"><span>NVO</span>FAN</div>
+        <button id="btnG" style="width:250px; padding:15px; border-radius:30px; margin-top:20px; font-weight:bold; cursor:pointer;">Google Giriş</button>
+        <button id="btnM" style="width:250px; padding:15px; border-radius:30px; margin-top:10px; background:none; border:1px solid #555; color:#fff; cursor:pointer;">Misafir Giriş</button>
     </div>
 
-    <div id="loginOverlay">
-        <div class="nvo-brand" style="font-size: 3.5rem; margin-bottom: 50px;"><span>NVO</span>FAN</div>
-        <button class="log-btn" style="background: #fff; color: #000;" onclick="loginGoogle()">Google ile Katıl</button>
-        <button class="log-btn" style="background: transparent; border: 1px solid #555; color: #fff;" onclick="loginGuest()">Misafir Olarak Gir</button>
+    <div class="sidebar-overlay" id="ovl"></div>
+    <div class="sidebar" id="side">
+        <div class="nvo-logo"><span>NVO</span>FAN</div>
+        <div class="menu-item" id="goMyProf"><i class="far fa-user"></i> Profil</div>
+        
+        <a href="mailto:necron.offical@gmail.com" class="menu-item admin-only" id="adminPanel">
+            <i class="fas fa-user-shield"></i> Admin: @MEwls Paneli
+        </a>
+
+        <div class="menu-item" onclick="location.reload()"><i class="fas fa-sign-out-alt"></i> Çıkış</div>
     </div>
 
     <header>
-        <i class="fas fa-bars" style="font-size: 1.3rem; cursor: pointer;" onclick="openSidebar()"></i>
-        <div class="header-title" id="pageTitle">Anasayfa</div>
-        <div class="nvo-brand" style="font-size: 1.1rem; margin:0;"><span>NVO</span></div>
+        <i class="fas fa-bars" id="openM" style="cursor:pointer;"></i>
+        <b id="headTitle">Anasayfa</b>
     </header>
 
     <div class="container">
-        <div id="homePage" class="page active">
-            <div class="tweet-box">
-                <img src="" class="avatar myAvatar">
-                <div class="tweet-input">
-                    <textarea id="postText" placeholder="Neler oluyor?"></textarea>
-                    <div class="tweet-footer">
-                        <i class="far fa-image" style="color: var(--x-blue);"></i>
-                        <button class="post-btn" onclick="sendTweet()">Postala</button>
-                    </div>
+        <div id="homeP" class="page active">
+            <div class="post-box">
+                <img src="" class="avatar myAv">
+                <div style="flex:1">
+                    <textarea id="tx" placeholder="Neler oluyor @MEwls?"></textarea>
+                    <button class="btn-post" id="snd">Postala</button>
                 </div>
             </div>
-            <div id="feedList"></div>
+            <div id="feed"></div>
         </div>
 
-        <div id="profilePage" class="page">
-            <div style="height: 120px; background: #333;"></div>
-            <div style="padding: 0 15px;">
-                <img src="" class="avatar" id="profImg" style="width: 80px; height: 80px; border: 4px solid #000; margin-top: -40px; background:#222;">
-                <button class="post-btn" style="float:right; margin-top:10px; background:transparent; border:1px solid #555;">Düzenle</button>
-                <div style="margin-top: 15px;">
-                    <h2 id="profName">İsim</h2>
-                    <div id="profHandle" style="color: var(--x-gray);">@username</div>
-                </div>
+        <div id="profP" class="page">
+            <div style="padding:20px; text-align:center;">
+                <img src="" id="vAv" class="avatar" style="width:100px; height:100px;">
+                <h2 id="vNm" style="margin-top:10px;">İsim</h2>
+                <p id="vHd" style="color:var(--x-gray);">@handle</p>
+                <hr style="margin:20px 0; border:0; border-top:1px solid var(--x-border);">
+                <div id="vFs"></div>
             </div>
-            <div id="userPosts" style="margin-top: 20px;"></div>
         </div>
     </div>
 
-    <nav id="bottomNav" style="display:none;">
-        <i class="fas fa-house-chimney active" onclick="nav('home', this)"></i>
-        <i class="fas fa-magnifying-glass"></i>
-        <i class="far fa-bell"></i>
-        <i class="far fa-envelope"></i>
+    <nav id="bNav" style="display:none;">
+        <i class="fas fa-home" id="navH"></i>
+        <i class="fas fa-search"></i>
+        <i class="far fa-user" id="navP"></i>
     </nav>
 
 <script type="module">
@@ -142,97 +110,104 @@
     const cfg = { apiKey: "AIzaSyAh1FMjRRyQsiRUf1YKf0htPDSP-I8j-J8", authDomain: "nvo-fan.firebaseapp.com", projectId: "nvo-fan", storageBucket: "nvo-fan.appspot.com", messagingSenderId: "724570776040", appId: "1:724570776040:web:fdae1a49175a6bd44ac45d" };
     const app = initializeApp(cfg); const auth = getAuth(app); const db = getFirestore(app);
 
-    let me = null;
+    let user = null;
+    const ADMIN_HANDLE = "MEwls"; // Senin admin adın
 
-    // YAN MENÜ FONKSİYONLARI
-    window.openSidebar = () => {
-        document.getElementById('sidebar').classList.add('active');
-        document.getElementById('overlay').classList.add('active');
+    // DÜĞME KONTROLLERİ (FIXED)
+    const ui = {
+        side: document.getElementById('side'),
+        ovl: document.getElementById('ovl'),
+        open: document.getElementById('openM'),
+        home: document.getElementById('homeP'),
+        prof: document.getElementById('profP'),
+        title: document.getElementById('headTitle')
     };
-    window.closeSidebar = () => {
-        document.getElementById('sidebar').classList.remove('active');
-        document.getElementById('overlay').classList.remove('active');
+
+    const toggle = (s) => { ui.side.classList.toggle('active', s); ui.ovl.classList.toggle('active', s); };
+    ui.open.onclick = () => toggle(true);
+    ui.ovl.onclick = () => toggle(false);
+
+    const switchPage = (p) => {
+        ui.home.classList.remove('active'); ui.prof.classList.remove('active');
+        document.getElementById(p+'P').classList.add('active');
+        ui.title.innerText = p === 'home' ? 'Anasayfa' : 'Profil';
     };
+
+    document.getElementById('navH').onclick = () => switchPage('home');
+    document.getElementById('navP').onclick = () => openMe();
+    document.getElementById('goMyProf').onclick = () => { openMe(); toggle(false); };
 
     // AUTH
-    window.loginGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
-    window.loginGuest = () => signInAnonymously(auth);
+    document.getElementById('btnG').onclick = () => signInWithPopup(auth, new GoogleAuthProvider());
+    document.getElementById('btnM').onclick = () => signInAnonymously(auth);
 
     onAuthStateChanged(auth, async (u) => {
         if(u) {
-            me = u;
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('bottomNav').style.display = 'flex';
+            user = u;
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('bNav').style.display = 'flex';
+            
+            // Admin Kontrolü
+            if(u.displayName?.includes(ADMIN_HANDLE) || u.uid.startsWith("MEwls")) {
+                document.getElementById('adminPanel').style.display = 'flex';
+            }
+
             const r = doc(db, "users", u.uid);
             const s = await getDoc(r);
             if(!s.exists()) {
                 await setDoc(r, { 
-                    name: u.displayName || "Misafir_" + u.uid.slice(0,4), 
-                    photo: u.photoURL || "https://api.dicebear.com/7.x/identicon/svg?seed=" + u.uid,
+                    name: u.displayName || "Üye_" + u.uid.slice(0,4), 
+                    photo: u.photoURL || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + u.uid,
                     uid: u.uid 
                 });
             }
-            document.querySelectorAll('.myAvatar').forEach(i => i.src = u.photoURL || "https://api.dicebear.com/7.x/identicon/svg?seed=" + u.uid);
-            nav('home');
-        } else {
-            document.getElementById('loginOverlay').style.display = 'flex';
+            document.querySelectorAll('.myAv').forEach(i => i.src = u.photoURL || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + u.uid);
+            switchPage('home');
         }
     });
 
-    // NAV
-    window.nav = (p, el) => {
-        document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-        document.getElementById(p + 'Page').classList.add('active');
-        document.getElementById('pageTitle').innerText = p === 'home' ? 'Anasayfa' : 'Profil';
-        if(el) {
-            document.querySelectorAll('nav i').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-        }
-    };
-
-    // TWEET SİSTEMİ
-    window.sendTweet = async () => {
-        const val = document.getElementById('postText').value;
-        if(!val.trim()) return;
-        const userD = (await getDoc(doc(db, "users", me.uid))).data();
+    // POSTLA
+    document.getElementById('snd').onclick = async () => {
+        const t = document.getElementById('tx').value;
+        if(!t.trim()) return;
+        const ud = (await getDoc(doc(db, "users", user.uid))).data();
         await addDoc(collection(db, "posts"), {
-            uid: me.uid, name: userD.name, photo: userD.photo, text: val, time: serverTimestamp()
+            uid: user.uid, name: ud.name, photo: ud.photo, text: t, time: serverTimestamp()
         });
-        document.getElementById('postText').value = "";
+        document.getElementById('tx').value = "";
     };
 
+    // FEED
     onSnapshot(query(collection(db, "posts"), orderBy("time", "desc")), snap => {
-        const list = document.getElementById('feedList'); list.innerHTML = "";
+        const f = document.getElementById('feed'); f.innerHTML = "";
         snap.forEach(d => {
             const p = d.data();
-            list.innerHTML += `
-                <div class="post" onclick="viewProfile('${p.uid}')">
+            const isAdmin = p.name.includes(ADMIN_HANDLE);
+            f.innerHTML += `
+                <div class="tweet" onclick="vUser('${p.uid}')">
                     <img src="${p.photo}" class="avatar">
-                    <div style="flex:1">
-                        <div class="p-name">${p.name} <span class="p-handle">@${p.uid.slice(0,5)}</span></div>
-                        <div class="p-text">${p.text}</div>
-                        <div class="p-actions">
-                            <i class="far fa-comment"></i> <i class="fas fa-retweet"></i> <i class="far fa-heart"></i> <i class="far fa-share-square"></i>
-                        </div>
+                    <div>
+                        <div class="t-name">${p.name} ${isAdmin ? '<i class="fas fa-check-circle t-admin-badge"></i>' : ''}</div>
+                        <div style="margin-top:4px;">${p.text}</div>
                     </div>
                 </div>`;
         });
     });
 
-    window.viewProfile = async (uid) => {
-        const u = (await getDoc(doc(db, "users", uid))).data();
-        document.getElementById('profImg').src = u.photo;
-        document.getElementById('profName').innerText = u.name;
-        document.getElementById('profHandle').innerText = "@" + u.uid.slice(0,6);
-        nav('profile');
-        const q = query(collection(db, "posts"), where("uid", "==", uid));
-        onSnapshot(q, snap => {
-            const f = document.getElementById('userPosts'); f.innerHTML = "";
-            snap.forEach(d => { f.innerHTML += `<div class="post"><div class="p-text">${d.data().text}</div></div>`; });
+    window.vUser = async (id) => {
+        const u = (await getDoc(doc(db, "users", id))).data();
+        document.getElementById('vAv').src = u.photo;
+        document.getElementById('vNm').innerText = u.name;
+        document.getElementById('vHd').innerText = "@" + u.uid.slice(0,6);
+        switchPage('prof');
+        onSnapshot(query(collection(db, "posts"), where("uid", "==", id)), snap => {
+            const l = document.getElementById('vFs'); l.innerHTML = "";
+            snap.forEach(d => { l.innerHTML += `<div class="tweet">${d.data().text}</div>`; });
         });
     };
 
-    window.openProfile = () => viewProfile(me.uid);
+    const openMe = () => vUser(user.uid);
 </script>
 </body>
 </html>
+
